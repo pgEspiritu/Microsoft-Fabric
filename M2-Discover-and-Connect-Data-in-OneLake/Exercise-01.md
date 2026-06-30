@@ -566,4 +566,5 @@ In this exercise, you learned how to:
 - Explore data visually
 - Use Copilot to generate SQL (optional)
 - Clean up Fabric resources
-```
+
+Actual Exercise Link: https://microsoftlearning.github.io/mslearn-fabric/Instructions/Labs/25-discover-onelake.html#clean-up-resources
