@@ -1,157 +1,876 @@
-# Secure Databases in Microsoft Fabric
+# Microsoft Fabric Learning Summary
+
+## 1. Lakehouse
+
+### What is a Lakehouse?
+
+A **Lakehouse** combines the flexibility of a **Data Lake** with the analytical power of a **Data Warehouse**.
+
+```text
+Data Lake
+- Stores any type of data
+- Cheap storage
+- Flexible
+
+        +
+
+Data Warehouse
+- SQL querying
+- ACID transactions
+- Optimized analytics
+
+        =
+
+Lakehouse
+```
+
+### Storage Structure
+
+```text
+Lakehouse
+│
+├── Files
+│     • CSV
+│     • JSON
+│     • Images
+│     • Parquet
+│     • Documents
+│
+└── Tables
+      • Delta Tables
+      • SQL Queryable
+      • Power BI Ready
+```
+
+### Delta Lake
+
+Provides:
+
+- ACID Transactions
+- Schema Enforcement
+- Time Travel
+- UPDATE / DELETE support
+- Transaction Log
+- Parquet Storage
+
+### Data Ingestion Methods
+
+- Upload files
+- Load to Table
+- Dataflows Gen2
+- Spark Notebooks
+- Data Factory Pipelines
+
+### Transform Data
+
+Using:
+
+- Spark Notebooks
+- PySpark
+- Spark SQL
+- Dataflows Gen2
+- Pipelines
+
+### Query Lakehouse
+
+#### SQL Analytics Endpoint
+
+Read-only SQL.
+
+Supports:
+
+- SELECT
+- JOIN
+- Views
+- Row-Level Security (RLS)
+- Column-Level Security (CLS)
+
+Cannot:
+
+- INSERT
+- UPDATE
+- DELETE
+
+#### Spark Notebook
+
+Languages:
+
+- SQL
+- PySpark
+- Scala
+
+Good for:
+
+- Machine Learning
+- Data Engineering
+- Complex Transformations
+
+#### Power BI
+
+Supports:
+
+- Direct Lake
+- Semantic Models
+- Copilot
+
+---
+
+# 2. Data Warehouse
+
+## Purpose
+
+A structured analytical database optimized for Business Intelligence (BI).
+
+## Star Schema
+
+```text
+          Dim Date
+              |
+Dim Product - Fact Sales - Dim Customer
+              |
+         Dim Store
+```
+
+### Fact Table
+
+Contains measurable business events:
+
+- Sales
+- Revenue
+- Quantity
+- Profit
+
+### Dimension Table
+
+Contains descriptive information:
+
+- Customer
+- Product
+- Store
+- Date
+
+### Dimension Keys
+
+#### Surrogate Key
+
+Internal warehouse key.
+
+```text
+CustomerKey
+1
+2
+3
+```
+
+#### Alternate Key
+
+Business key from source systems.
+
+```text
+CustomerID
+C100
+C200
+C300
+```
+
+### Slowly Changing Dimension (SCD)
+
+Tracks historical changes.
+
+Example:
+
+```text
+Customer
+
+2024
+Address = Manila
+
+2025
+Address = Cebu
+```
+
+History is preserved instead of overwritten.
+
+### Warehouse Features
+
+Supports full T-SQL.
+
+#### DDL
+
+- CREATE
+- ALTER
+- DROP
+
+#### DML
+
+- INSERT
+- UPDATE
+- DELETE
+- MERGE
+
+### Warehouse Ingestion
+
+- COPY INTO
+- OPENROWSET
+- Pipelines
+- Dataflows
+- Cross-Database Queries
+
+### Staging Pattern
+
+```text
+CSV
+
+↓
+
+Staging Table
+
+↓
+
+Transformation
+
+↓
+
+Dimension Tables
+
+↓
+
+Fact Tables
+```
+
+### Table Clone
+
+Zero-copy clone.
+
+```text
+Original Table
+
+↓
+
+Clone
+
+Same data
+
+Different metadata
+```
+
+### Security
+
+Workspace Roles:
+
+- Admin
+- Member
+- Contributor
+- Viewer
+
+SQL Security:
+
+- Object-Level Security
+- Row-Level Security (RLS)
+- Column-Level Security (CLS)
+- Dynamic Data Masking
+
+### Monitoring
+
+Query Insights
+
+- Long-running queries
+- Query history
+- Performance analysis
+
+Dynamic Management Views (DMVs)
+
+Example:
+
+```sql
+SELECT *
+FROM sys.dm_exec_requests;
+```
+
+---
+
+# 3. Real-Time Intelligence
+
+## Purpose
+
+Analyze streaming data with minimal latency.
+
+### Event
+
+A single occurrence.
+
+Example:
+
+```text
+Temperature = 82°C
+```
+
+### Stream
+
+A sequence of events over time.
+
+```text
+82
+
+83
+
+84
+
+85
+
+86
+```
+
+## Components
+
+```text
+Source
+
+↓
+
+Eventstream
+
+↓
+
+Transformation
+
+↓
+
+Destination
+```
+
+### Eventstream
+
+#### Sources
+
+- Azure Event Hub
+- Azure IoT Hub
+- Azure Service Bus
+- CDC
+- Kafka
+- MQTT
+- Fabric Events
+
+#### Transformations
+
+- SQL
+- Filter
+- Aggregate
+- Join
+- Group By
+- Expand
+
+#### Destinations
+
+- Eventhouse
+- Lakehouse
+- Activator
+- Derived Stream
+- Custom Endpoint
+
+### Eventhouse
+
+Stores streaming data.
+
+Uses:
+
+- KQL Database
+
+Optimized for:
+
+- Time-series
+- Fast ingestion
+
+### KQL Queryset
+
+Supports:
+
+- KQL
+- T-SQL
+
+### Real-Time Dashboard
+
+- Auto-refresh
+- Interactive dashboards
+- Live monitoring
+
+### Activator
+
+Automates actions.
+
+```text
+Events
+
+↓
+
+Objects
+
+↓
+
+Properties
+
+↓
+
+Rules
+
+↓
+
+Action
+```
+
+Examples:
+
+- Email alerts
+- Run Notebook
+- Trigger Pipeline
+- Power Automate workflow
+
+---
+
+# 4. Data Science
+
+## Purpose
+
+Train Machine Learning models.
+
+### Machine Learning Types
+
+#### Classification
+
+Predicts categories.
+
+Example:
+
+```text
+Will customer churn?
+```
+
+#### Regression
+
+Predicts numbers.
+
+```text
+House Price
+```
+
+#### Clustering
+
+Groups similar records.
+
+#### Forecasting
+
+Predicts future values.
+
+```text
+Sales Next Month
+```
+
+## Data Science Workflow
+
+```text
+Problem
+
+↓
+
+Collect Data
+
+↓
+
+Prepare Data
+
+↓
+
+Train Model
+
+↓
+
+Evaluate
+
+↓
+
+Predict
+
+↓
+
+Deploy
+```
+
+## Fabric Data Science Stack
+
+```text
+Lakehouse
+
+↓
+
+Notebook
+
+↓
+
+Spark
+
+↓
+
+Python
+
+↓
+
+MLflow
+
+↓
+
+Model Registry
+
+↓
+
+Predict
+```
+
+### Notebook Languages
+
+- PySpark
+- Spark SQL
+- SparkR
+
+### Data Wrangler
+
+Low-code data preparation.
+
+Features:
+
+- Data profiling
+- Missing value detection
+- Automatic code generation
+
+### MLflow
+
+Tracks:
+
+- Parameters
+- Metrics
+- Artifacts
+
+```text
+Experiment
+
+├── Run 1
+
+├── Run 2
+
+└── Run 3
+```
+
+### Registered Models
+
+Version control for ML models.
+
+```text
+SalesModel
+
+Version 1
+
+Version 2
+
+Version 3
+```
+
+### PREDICT Function
+
+Uses registered ML models for batch predictions.
+
+---
+
+# 5. SQL Database in Microsoft Fabric
 
 ## Overview
 
-Microsoft Fabric SQL Database provides **built-in security features** to protect sensitive data at both the **database** and **SQL analytics endpoint** levels.
+Based on Azure SQL Database.
 
-Security controls ensure that only authorized users can access or view sensitive information without requiring changes to existing applications.
+Difference:
+
+| Azure SQL Database | SQL Database in Fabric |
+|--------------------|------------------------|
+| PaaS | SaaS |
+
+### Major Feature
+
+```text
+SQL Database
+
+↓
+
+Automatic Replication
+
+↓
+
+OneLake
+
+↓
+
+Parquet
+
+↓
+
+Analytics Ready
+```
+
+### Create Database
+
+Options:
+
+- Sample Data
+- T-SQL Editor
+- Connection Strings
+
+### Source Control
+
+Supports:
+
+- Commit
+- Pull
+- History
+- Collaboration
+
+### Performance Dashboard
+
+Shows:
+
+- Query performance
+- Bottlenecks
+- Automatic indexes
+
+### Automatic Tuning
+
+Uses machine learning to:
+
+- Create indexes
+- Drop unused indexes
+- Improve performance
+
+### Security
+
+- Workspace Roles
+- Item Permissions
+- Database Roles
+- Row-Level Security
+- Column-Level Security
+- Dynamic Data Masking
+
+### Copilot
+
+Can:
+
+- Generate SQL
+- Explain SQL
+- Fix SQL
+- Auto-complete SQL
+
+### Mirroring
+
+```text
+Azure SQL
+
+↓
+
+Fabric SQL
+
+↓
+
+OneLake
+
+↓
+
+Power BI
+
+↓
+
+Spark
+```
+
+Near real-time synchronization.
+
+### Data Virtualization
+
+Query external data without copying.
+
+Supports:
+
+- Parquet
+- CSV
+- Delta
+- OneLake
+- External Tables
 
 ---
 
-# Security Capabilities
+# 6. Semantic Models
 
-SQL Database in Microsoft Fabric uses the same **SQL engine** as Azure SQL Database, allowing users to leverage familiar **T-SQL-based security features**.
+## Purpose
 
-Benefits include:
+Business layer between raw data and reports.
 
-- Fine-grained access control
-- Protection of sensitive data
-- Secure data sharing
-- Enterprise-grade database security
+## Storage Modes
 
----
+### Import
 
-# Workspace Roles
+```text
+Power BI
 
-Workspace roles control access to items within a Fabric workspace.
+↓
 
-Available roles include:
+Copies Data
 
-- **Admin** – Full control over the workspace.
-- **Member** – Can manage and edit workspace content.
-- **Contributor** – Can create and modify content.
-- **Viewer** – Read-only access.
+↓
 
-Workspace roles help maintain security while supporting collaboration.
+Fast
 
----
+↓
 
-# Item Permissions
+Manual Refresh Required
+```
 
-Permissions can also be assigned directly to individual SQL databases.
+### DirectQuery
 
-Purpose:
+```text
+Power BI
 
-- Share specific SQL databases without granting access to the entire workspace.
-- Enable downstream consumption securely.
+↓
 
-You can manage permissions for:
+Source Database
 
-- SQL Database
-- SQL Analytics Endpoint
-- Default Semantic Model
+↓
 
-**Location:**
+Always Current
 
-Workspace → Select Item → **Manage Permissions**
+↓
 
-> **Note:**  
-> Item permissions do **not** modify the security metadata defined inside the database.
+Slower Queries
+```
 
----
+### Direct Lake
 
-# Data Protection Features
+```text
+Power BI
 
-For more granular security, SQL Database supports **T-SQL-based security controls**.
+↓
 
-## Object-Level Security (OLS)
+OneLake Parquet
 
-Controls access to specific database objects, such as:
+↓
 
-- Tables
-- Views
-- Stored Procedures
+No Copy
 
----
+↓
 
-## Column-Level Security (CLS)
+Very Fast
 
-Restricts access to selected columns within a table.
+↓
+
+Always Current
+```
+
+Recommended storage mode for Microsoft Fabric.
+
+## Star Schema
+
+```text
+Dimensions
+
+↓
+
+Fact
+
+↓
+
+Measures
+```
+
+## Relationships
+
+Many-to-One
+
+```text
+Fact Sales
+
+↓
+
+Customer
+```
+
+Cross-filter direction:
+
+- Single Direction (recommended)
+
+## Views
+
+Reusable SQL logic.
+
+## Measures
+
+Reusable DAX calculations.
 
 Example:
 
-- Hide salary columns
-- Restrict personal information
+```DAX
+Total Sales =
+SUM(Sales[Amount])
+```
+
+## Semantic Model Benefits
+
+- Single source of truth
+- Faster Power BI reports
+- Copilot ready
+- Fabric IQ ready
+- Reusable business logic
 
 ---
 
-## Row-Level Security (RLS)
+# End-to-End Microsoft Fabric Architecture
 
-Restricts which rows users can view using **WHERE** clause filters.
+```text
+                 DATA SOURCES
+      (ERP, CSV, IoT, SQL, APIs, Files)
+                      │
+                      ▼
+          ┌──────────────────────┐
+          │ Data Factory /       │
+          │ Eventstreams /       │
+          │ Dataflows            │
+          └──────────────────────┘
+                      │
+          ┌───────────┴───────────┐
+          ▼                       ▼
+     Lakehouse               Data Warehouse
+ (Files + Delta Tables)    (Structured SQL)
+          │                       │
+          └───────────┬───────────┘
+                      ▼
+              OneLake Storage
+                      │
+          ┌───────────┼────────────┐
+          ▼           ▼            ▼
+     Spark       SQL Endpoint   Eventhouse
+   Notebooks                    (KQL)
+          │           │            │
+          └───────────┼────────────┘
+                      ▼
+              Semantic Model
+                      │
+          ┌───────────┼────────────┐
+          ▼           ▼            ▼
+       Power BI    Copilot     Fabric IQ
+                      │
+                      ▼
+               Business Insights
+```
 
-Example:
+## Microsoft Fabric Workloads Summary
 
-- Employees only see records from their assigned region.
-- Managers see only their department's data.
-
----
-
-## Dynamic Data Masking (DDM)
-
-Masks sensitive information for unauthorized users.
-
-Common examples:
-
-- Email addresses
-- Phone numbers
-- Credit card numbers
-- Personal identifiers
-
-Masking occurs automatically without modifying the stored data.
-
----
-
-# Manage SQL Security
-
-Database security can be managed directly in the Fabric portal.
-
-**Navigation:**
-
-1. Open the SQL Database.
-2. Select **Security**.
-3. Choose **Manage SQL Security**.
-
-From there, administrators can configure:
-
-- Database roles
-- User permissions
-- Security policies
-- Data protection settings
-
----
-
-# Security Layers
-
-| Security Layer | Purpose |
-|----------------|---------|
-| Workspace Roles | Control workspace-level access |
-| Item Permissions | Share individual SQL databases |
-| Object-Level Security | Restrict access to database objects |
-| Column-Level Security | Protect sensitive columns |
-| Row-Level Security | Filter visible rows per user |
-| Dynamic Data Masking | Hide sensitive data from unauthorized users |
-
----
-
-# Key Takeaways
-
-- SQL Database in Fabric provides **enterprise-grade security** using the SQL Server engine.
-- **Workspace roles** manage overall access to Fabric resources.
-- **Item permissions** allow secure sharing of individual databases.
-- **T-SQL security features** provide granular control over data access.
-- Supported protections include:
-  - Object-Level Security (OLS)
-  - Column-Level Security (CLS)
-  - Row-Level Security (RLS)
-  - Dynamic Data Masking (DDM)
-- SQL security settings can be managed directly through the **Fabric portal**.
+| Workload | Primary Purpose | Main Technologies |
+|-----------|-----------------|-------------------|
+| Lakehouse | Unified storage for structured and unstructured data | Delta Lake, Spark, SQL |
+| Data Warehouse | Relational analytics | T-SQL, Star Schema |
+| Real-Time Intelligence | Streaming analytics | Eventstream, Eventhouse, KQL, Activator |
+| Data Science | Machine Learning | Spark, MLflow, Python |
+| SQL Database | Operational database | Azure SQL Engine, OneLake |
+| Semantic Models | BI semantic layer | DAX, Direct Lake, Power BI |
